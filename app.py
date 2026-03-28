@@ -57,13 +57,27 @@ def explain():
             contents=prompt
         )
         explanation = response.text
-        return jsonify({"explanation": explanation}), 200, {"Content-Type": "application/json; charset=utf-8"}
+        import json
+        from flask import Response
+        return Response(
+            json.dumps({"explanation": explanation}, ensure_ascii=False),
+            mimetype="application/json; charset=utf-8"
+        )
     except Exception as e:
         error_msg = str(e)
         if "quota" in error_msg.lower() or "429" in error_msg:
-            return jsonify({"error": "⚠ AI 配額已超過，請明天再試或更換 API Key。"}), 500
-        return jsonify({"error": error_msg}), 500
-
+            from flask import Response
+            import json
+            return Response(
+                json.dumps({"error": "⚠ AI 配額已超過，請明天再試或更換 API Key。"}, ensure_ascii=False),
+                status=500,
+                mimetype="application/json; charset=utf-8"
+            )
+        return Response(
+            json.dumps({"error": error_msg}, ensure_ascii=False),
+            status=500,
+            mimetype="application/json; charset=utf-8"
+        )
 # ── 啟動 ────────────────────────────────────────────────────
 if __name__ == "__main__":
     app.run(debug=True)
