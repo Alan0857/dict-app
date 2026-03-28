@@ -1,5 +1,5 @@
 ﻿import os
-os.environ["GEMINI_API_KEY"] = "AIzaSyC6l8kefKOeNOCp-i4ApNV19MwW6KZphL0"
+os.environ["GEMINI_API_KEY"] = "在這裡填入你自己的Gemini API Key"
 
 from flask import Flask, render_template, request, jsonify
 from google import genai
